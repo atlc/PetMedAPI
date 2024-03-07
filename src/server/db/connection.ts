@@ -9,6 +9,7 @@ export const Query = async <T = QueryResultsReturningID>(sql: string, vals?: unk
     const res = await pool.query(sql, vals);
 
     if (res.command === "SELECT") return res.rows as T;
+
     if (res.command === "INSERT") return { ...res, insertId: res.rows[0].id } as T;
 
     return res as T;
