@@ -30,7 +30,7 @@ router.post("/register", async (req, res) => {
 
         const results = await db.users.register({ name, email, password: hashed, image_url });
 
-        const id = results.insertId!;
+        const id = results.id!;
 
         const payload: Payload = { id, name };
         const token = jwt.sign(payload, config.jwt.secret, { expiresIn: config.jwt.expiration });
