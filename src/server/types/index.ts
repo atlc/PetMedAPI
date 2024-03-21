@@ -87,6 +87,12 @@ export interface MedicationLog extends NewMedicationLog {
     time_logged: string; // The insertion timestamp to serve as an audit log
 }
 
+export interface VerificationPayload {
+    name: string;
+    email: string;
+    id: string;
+}
+
 export interface Payload {
     id: User["id"];
     name: User["name"];

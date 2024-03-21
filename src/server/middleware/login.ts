@@ -1,6 +1,7 @@
 import type { RequestHandler } from "express";
 import db from "../db";
 import bcrypt from "bcrypt";
+import { sendVerificationMail } from "../services/mailgun/auth";
 
 export const isValidUser: RequestHandler = async (req, res, next) => {
     const { email, password } = req.body;
@@ -18,6 +19,14 @@ export const isValidUser: RequestHandler = async (req, res, next) => {
 
         if (!passwordMatched) {
             return res.status(401).json({ message: "Invalid credentials" });
+        }
+
+        if (!user.is_verified) {
+            await sendVerificationMail({ email, id: user.id, name: user.name });
+
+            return res.status(403).json({
+                message: "You must verify your account first before logging in - check your email, a new link which will expire in 15 minutes has been sent",
+            });
         }
 
         const { id, name } = user;

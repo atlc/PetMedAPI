@@ -13,6 +13,15 @@ const jwt = {
     expiration: process.env.JWT_EXPIRATION,
 };
 
+const mailgun = {
+    domain: process.env.MG_DOMAIN as string,
+    api_key: process.env.MG_API_KEY as string,
+};
+
+const domain = {
+    url: process.env.CLIENT_URL_BASE,
+};
+
 interface ConfigObject {
     [key: string]: string | undefined;
 }
@@ -21,12 +30,19 @@ const hasUndefinedValues = (configObject: ConfigObject) => {
     return Object.values(configObject).some((val) => typeof val === "undefined");
 };
 
-if (hasUndefinedValues(jwt)) {
-    console.log("\n\nMissing JWT config vars!\n\n");
-    process.exit(1);
+const all_envars = {
+    db,
+    domain,
+    jwt,
+    mailgun,
+};
+
+for (const key in all_envars) {
+    const obj = all_envars[key as keyof typeof all_envars];
+    if (hasUndefinedValues(obj)) {
+        console.log("\n\nMissing required config vars!\n\n");
+        process.exit(1);
+    }
 }
 
-export default {
-    db,
-    jwt,
-};
+export default all_envars;
