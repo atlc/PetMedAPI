@@ -1,165 +1,46 @@
-# TypeScript React Express ESBuild Boilerplate
+# PetMed
 
-Welcome to the TypeScript React Express ESBuild boilerplate, tailored for budding developers learning to craft MERN CRUD applications. However, this boilerplate is also ideal for anyone aiming to switch gears and utilize ESBuild over the conventional webpack.
-
-# Table Of Contents
-
--   [Overview](#overview)
--   [Features](#features)
--   [Getting Started](#getting-started)
-    -   [1. Clone the Repository](#1-clone-the-repository)
-    -   [2. Install Dependencies](#2-install-dependencies)
-    -   [3. Running in Development](#3-running-in-development)
--   [Directory Structure](#directory-structure)
-    -   [Top-Level Overview](#top-level-overview)
--   [Building for Production](#building-for-production)
-    -   [1. Building for Production](#1-building-for-production)
-    -   [2. Running in Production](#2-running-in-production)
--   [YouTube Companion Videos](#youtube-companion-videos)
--   [Why ESBuild over Webpack?](#why-esbuild-over-webpack)
--   [Contributions](#contributions)
-
-## Overview
-
-This boilerplate is designed with simplicity and efficiency in mind. It leverages ESBuild, known for its speed and ease of configuration, to bundle your JavaScript and styles. It provides a structured starting point for both client and server development using popular technologies like React, Express, and TypeScript.
+PetMed is a full-stack pet medicine logging app built on a Typescript+PERN stack to help keep track and manage your pets' medications. You can create households to keep all your pets under a unified umbrella, and if you petsit you can create multiple households to keep every pet grouping distinct. If you are a pet owner, you can provide temporary or permanent access to your household so that a petsitter may access your pets' medication schedules.
 
 ## Features
 
--   **React**: For crafting intuitive UIs.
--   **Express**: A minimalist web framework for building the server-side.
--   **TypeScript**: Bringing strong typing to JavaScript, enhancing maintainability and developer experience.
--   **ESBuild**: A revolutionary fast JavaScript bundler and minifier.
--   **Bootstrap SASS**: Empower your projects with the world's most popular CSS framework, now in its SASS variant. Tailor designs seamlessly with variables and mixins.
+-   **User Authentication**: Secure user authentication system with JWTs.
+-   **Account Verification**: Email verification process ensures account validity and allows for future features like passwordless logins and password resets.
+-   **Medication Management**: Track pet medications, including dosage amounts, units, start and end dates, and notes.
+-   **Schedule Management**: Set up medication schedules for pets, including scheduled times for doses.
+-   **Logging Administration**: Log medication administration events, including administering user, time, and dose information.
+-   **Image Upload**: I mean, it's an app about pets, we can't _not_ have profile pictures for your pets!
 
-    _Note_: While this boilerplate uses Bootstrap SASS, the flexibility of ESBuild means it's straightforward to switch plugins. For instance, you can easily incorporate PostCSS with TailwindCSS or any other preferred styling solution.
+## Technologies Used
+
+-   **Frontend**: React, TypeScript
+-   **Backend**: Node.js, Express.js, TypeScript
+-   **Database**: PostgreSQL
+-   **Authentication**: JWT
+-   **Account Verification & Other Email Features**: Mailgun
+-   **File Storage**: DigitalOcean's Spaces (an S3-compatible object storage service)
+-   **Development Tools**: Multer (for file uploads), AWS SDK (for S3 integration)
 
 ## Getting Started
 
-1. **Clone the Repository**
+1. Clone the repository: `git clone https://github.com/yourusername/pet-medicine-tracker.git`
+2. Navigate to the project directory: `cd pet-medicine-tracker`
+3. Install dependencies: `npm install`
+4. Set up the database - there's a [DB starter script](./src/server/utils/db/setup.sql) you can run to create the tables & update triggers
+5. Set up environment variables:
+    - Create a `.env` file based on the `.env.example` (with everything in a similar format to what your real values may look like).
+    - Add your DigitalOcean Spaces credentials, Mailgun keys, database info, and other necessary environment variables.
+6. Start the dev server: `npm run dev`
+7. Visit `http://localhost:8000` in your browser to view the app.
 
-    ```sh
-    git clone https://github.com/covalence-io/ts-react-express-esbuild.git
-    cd ts-react-express-esbuild
-    ```
+## Contributing
 
-2. **Install Dependencies**
+Contributions are welcome! If you'd like to contribute to this project, please fork the repository, make your changes, and submit a pull request.
 
-    ```sh
-    npm install
-    ```
+## Disclaimer
 
-3. **Running in Development**
-   Start both client and server in development mode:
-    ```sh
-    npm run dev
-    ```
+This project is being developed for **educational purposes**. Anyone utilizing the code for personal use **assumes all risk** associated with their pets. **Always consult with your veterinarian for any questions pertaining to your pets' healthcare and wellness needs.**
 
-## Directory Structure
+## License
 
-Understanding the project's structure is crucial for efficiently navigating and utilizing this boilerplate. Here's a detailed breakdown of the directory tree:
-
-```
-dist/
-├─ server.js
-esbuild/
-├─ client.dev.mjs
-├─ server.dev.mjs
-├─ client.prod.mjs
-├─ server.prod.mjs
-node_modules/
-public/
-├─ static/
-│  ├─ bundle.js
-├─ index.html
-├─ favicon.ico
-src/
-├─ client/
-│  ├─ styles/
-│  │  ├─ app.scss
-│  ├─ App.tsx
-│  ├─ index.tsx
-│  ├─ tsconfig.json
-├─ server/
-│  ├─ server.ts
-│  ├─ tsconfig.json
-.gitignore
-nodemon.json
-package-lock.json
-package.json
-README.md
-tsconfig.json
-```
-
-### Top-Level Overview
-
--   **`dist/`**: The output directory where your server-side TypeScript files get compiled to JavaScript.
-
-    -   `server.js`: The compiled server-side entry point. **Note**: This file and the entire `dist/` directory are not tracked on GitHub as they represent compiled production code.
-
--   **`esbuild/`**: Houses configuration files for the ESBuild bundler.
-
-    -   `client.dev.mjs`: ESBuild configuration for client-side development.
-    -   `server.dev.mjs`: ESBuild configuration for server-side development.
-    -   `client.prod.mjs`: ESBuild configuration for client-side production.
-    -   `server.prod.mjs`: ESBuild configuration for server-side production.
-
--   **`node_modules/`**: Standard directory for all installed npm packages.
-
--   **`public/`**: Serves static files and the main `index.html` for your React application.
-
-    -   `static/`: Contains bundled output files for the client side.
-        -   `bundle.js`: Bundled JavaScript for the client. **Note**: The bundled `bundle.js` is not tracked on GitHub as it is a dynamically generated file based on the source code.
-    -   `index.html`: The main HTML file that serves as a shell for your React app.
-    -   `favicon.ico`: The little website icon that appears in your tab/bookmarks.
-
--   **`src/`**: The core of your application's source code, both client-side and server-side.
-
-    -   `client/`: Contains all client-side React components and styles.
-        -   `styles/`: Directory for all your SCSS files.
-            -   `app.scss`: Main style file for your application.
-        -   `App.tsx`: The main React component for your application.
-        -   `index.tsx`: Client-side entry point.
-        -   `tsconfig.json`: TypeScript configuration specific to the client side.
-    -   `server/`: Houses server-side logic using Express.
-        -   `server.ts`: Entry point for the server.
-        -   `tsconfig.json`: TypeScript configuration specific to the server side.
-
--   **`.gitignore`**: Lists files and directories that should not be tracked by Git. This includes the compiled outputs like those in the `dist/` directory and dynamically generated bundles like `app.js`.
-
--   **`nodemon.json`**: Configuration for Nodemon, a utility that monitors changes in your server code and automatically restarts the server.
-
--   **`package-lock.json`**: Automatically generated file that describes the exact tree that was generated in `node_modules` as a result of running `npm install`.
-
--   **`package.json`**: Lists package dependencies and contains various metadata about the project, like scripts.
-
--   **`README.md`**: This very file, offering a guide to the project.
-
--   **`tsconfig.json`**: The root TypeScript configuration file.
-
-## Building for Production
-
-The scripts for production builds ensure optimized performance for deployment.
-
-1. **Building for Production**
-
-    ```sh
-    npm run build
-    ```
-
-2. **Running in Production**
-    ```sh
-    npm start
-    ```
-
-## YouTube Companion Videos
-
-I coded this boilerplate out across a few YouTube videos if you want the from-scratch-to-end-product building of this repo. Watch and subscribe!
-[https://youtu.be/3tEUVpyRYTg](https://youtu.be/3tEUVpyRYTg)
-
-## Why ESBuild over Webpack?
-
-Webpack has been the go-to bundler for many projects over the years. However, ESBuild brings in significant speed improvements due to its Go-based architecture. This makes the build and development processes much faster, enhancing developer experience, especially in larger projects. This boilerplate is meant to introduce developers to this efficient tool and encourage exploration beyond traditional tools.
-
-## Contributions
-
-Feel free to raise issues, send pull requests, or provide feedback to improve this boilerplate. We welcome collaboration and suggestions to make this a more effective learning tool for our students and the community.
+This project is licensed under the [MIT License](LICENSE).
