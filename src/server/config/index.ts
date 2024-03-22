@@ -22,6 +22,11 @@ const domain = {
     url: process.env.CLIENT_URL_BASE,
 };
 
+const digital_ocean = {
+    spaces_key: process.env.SPACES_KEY as string,
+    spaces_secret: process.env.SPACES_SECRET as string,
+};
+
 interface ConfigObject {
     [key: string]: string | undefined;
 }
@@ -32,6 +37,7 @@ const hasUndefinedValues = (configObject: ConfigObject) => {
 
 const all_envars = {
     db,
+    digital_ocean,
     domain,
     jwt,
     mailgun,
@@ -40,7 +46,7 @@ const all_envars = {
 for (const key in all_envars) {
     const obj = all_envars[key as keyof typeof all_envars];
     if (hasUndefinedValues(obj)) {
-        console.log("\n\nMissing required config vars!\n\n");
+        console.log(`\n\nMissing required ${key} config vars!\n\n`);
         process.exit(1);
     }
 }
