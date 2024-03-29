@@ -63,7 +63,7 @@ CREATE TABLE medications (
   FOREIGN KEY (pet_id) REFERENCES pets(id)
 );
 
-CREATE TABLE medication_schedule (
+CREATE TABLE medication_schedules (
 	id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   scheduled_time TIME NOT NULL,
   medication_id UUID,
@@ -75,15 +75,15 @@ CREATE TABLE medication_schedule (
 CREATE TABLE medication_log (
 	id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   medication_id UUID,
+  notes VARCHAR(1024),
   scheduled_medication_id UUID,
   administering_user_id UUID,
   administration_time TIMESTAMPTZ NOT NULL,
   time_logged TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (administering_user_id) REFERENCES users(id),
   FOREIGN KEY (medication_id) REFERENCES medications(id),
-  FOREIGN KEY (scheduled_medication_id) REFERENCES medication_schedule(id)
+  FOREIGN KEY (scheduled_medication_id) REFERENCES medication_schedules(id)
 );
-
 
 CREATE OR REPLACE FUNCTION reassign_updated_at_column()
 RETURNS TRIGGER AS $$
