@@ -1,24 +1,14 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import db from "../../db";
-import { hasBadStrings } from "../../utils/validators";
 import { sendVerificationMail } from "../../services/mailgun/auth";
+import { is_valid_user } from "../../middleware/registration";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.post("/", is_valid_user, async (req, res) => {
     try {
         const { name, email, password, image_url } = req.body;
-
-        if (
-            hasBadStrings([
-                { string: name, max: 64, min: 1 },
-                { string: email, max: 128, min: 7 },
-                { string: password, max: 200, min: 1 },
-            ])
-        ) {
-            return res.status(400).json({ message: "Please ensure all data is filled out correctly" });
-        }
 
         const hashed = await bcrypt.hash(password, 12);
 

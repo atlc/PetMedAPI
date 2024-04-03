@@ -4,6 +4,7 @@ import path from "path";
 import { v4 } from "uuid";
 import db from "../../db";
 import { uploadImage } from "../../services/digitalocean/image";
+import { is_valid_pet } from "../../middleware/pets";
 
 const storage = multer.memoryStorage();
 
@@ -41,14 +42,9 @@ router.post("/upload", mult.single("upload"), async (req, res) => {
     }
 });
 
-router.post("/", async (req, res) => {
+router.post("/", is_valid_pet, async (req, res) => {
     try {
         const { name, birthdate, weight, species, household_id, image_url } = req.body;
-
-        if (!name || !birthdate || !weight || !species || !household_id) {
-            const missing = [name, birthdate, weight, species, household_id].filter((property) => !property).join(", ");
-            return res.status(400).json({ message: `Missing the following properties: ${missing}` });
-        }
 
         const results = await db.pets.create({ name, birthdate, weight, species, household_id, image_url });
         res.status(201).json({ message: "Successfully created pet!", id: results.id });
