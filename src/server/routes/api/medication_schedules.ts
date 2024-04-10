@@ -1,9 +1,10 @@
 import express from "express";
 import db from "../../db";
+import { is_valid_medication_schedule } from "../../middleware/api/medication_schedules";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.post("/", is_valid_medication_schedule, async (req, res) => {
     try {
         const { scheduled_time, medication_id } = req.body;
 

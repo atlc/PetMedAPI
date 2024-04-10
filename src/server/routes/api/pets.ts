@@ -4,7 +4,7 @@ import path from "path";
 import { v4 } from "uuid";
 import db from "../../db";
 import { uploadImage } from "../../services/digitalocean/image";
-import { is_valid_pet } from "../../middleware/pets";
+import { is_valid_pet } from "../../middleware/api/pets";
 
 const storage = multer.memoryStorage();
 

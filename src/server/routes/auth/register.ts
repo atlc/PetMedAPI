@@ -2,11 +2,10 @@ import express from "express";
 import bcrypt from "bcrypt";
 import db from "../../db";
 import { sendVerificationMail } from "../../services/mailgun/auth";
-import { is_valid_user } from "../../middleware/registration";
 
 const router = express.Router();
 
-router.post("/", is_valid_user, async (req, res) => {
+router.post("/", async (req, res) => {
     try {
         const { name, email, password, image_url } = req.body;
 

@@ -1,9 +1,10 @@
 import express from "express";
 import db from "../../db";
+import { is_valid_medication } from "../../middleware/api/medications";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.post("/", is_valid_medication, async (req, res) => {
     const { name, pet_id, dosage_amount, dosage_unit, start_date, end_date, notes } = req.body;
 
     if (!name || !pet_id || !dosage_amount || !dosage_unit || !start_date || !end_date || !notes) {

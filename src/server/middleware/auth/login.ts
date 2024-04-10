@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
-import db from "../db";
+import db from "../../db";
 import bcrypt from "bcrypt";
-import { sendVerificationMail } from "../services/mailgun/auth";
+import { sendVerificationMail } from "../../services/mailgun/auth";
 
 export const isValidUser: RequestHandler = async (req, res, next) => {
     const { email, password } = req.body;

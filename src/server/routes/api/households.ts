@@ -1,21 +1,12 @@
 import express from "express";
 import db from "../../db";
-import { hasBadStrings } from "../../utils/validators";
+import { is_valid_household } from "../../middleware/api/households";
 
 const router = express.Router();
 
-router.post("/", async (req, res) => {
+router.post("/", is_valid_household, async (req, res) => {
     const { owner_id, name } = req.body;
     try {
-        const dataIsInvalid = hasBadStrings([
-            { string: owner_id, min: 32, max: 36 },
-            { string: name, min: 3, max: 64 },
-        ]);
-
-        if (dataIsInvalid) {
-            return res.status(400).json({ message: "The name must be between 3 and 64 characters" });
-        }
-
         const { id } = await db.households.create({ name, owner_id });
 
         await db.user_households.create({ user_id: owner_id, household_id: id! });

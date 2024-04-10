@@ -1,9 +1,9 @@
 import type { RequestHandler } from "express";
-import schemas from "../schemas";
+import schemas from "../../schemas";
 
-export const is_valid_user: RequestHandler = async (req, res, next) => {
+export const is_valid_household: RequestHandler = async (req, res, next) => {
     try {
-        await schemas.users.createable_user.parseAsync(req.body);
+        schemas.households.createable_household.parseAsync(req.body);
         next();
     } catch (error) {
         console.log(error);

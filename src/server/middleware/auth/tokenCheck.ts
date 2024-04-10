@@ -1,7 +1,7 @@
 import type { RequestHandler } from "express";
 import jwt from "jsonwebtoken";
-import config from "../config";
-import { Payload } from "../types";
+import config from "../../config";
+import { Payload } from "../../types";
 
 export const tokenCheck: RequestHandler = (req, res, next) => {
     const authHeader = req.headers.authorization;

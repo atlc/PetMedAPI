@@ -1,7 +1,7 @@
 import express from "express";
 import jwt from "jsonwebtoken";
 import config from "../../config";
-import { isValidUser } from "../../middleware/login";
+import { isValidUser } from "../../middleware/auth/login";
 
 const router = express.Router();
 
