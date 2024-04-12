@@ -4,9 +4,9 @@ const user = z.object({
     id: z.string().uuid(),
     name: z.string().min(1).max(64),
     email: z.string().min(1).max(128).email(),
-    password: z.string().min(12).max(128),
+    password: z.string().min(10).max(128),
     is_verified: z.boolean(),
-    image_url: z.string().url().max(128),
+    image_url: z.string().url().max(128).optional(),
     created_at: z.string().datetime(),
     updated_at: z.string().datetime(),
 });

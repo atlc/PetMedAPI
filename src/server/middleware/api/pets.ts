@@ -1,5 +1,6 @@
 import type { RequestHandler } from "express";
 import schemas from "../../schemas";
+import { log } from "console";
 
 export const is_valid_pet: RequestHandler = async (req, res, next) => {
     try {
