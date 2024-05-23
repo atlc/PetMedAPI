@@ -1,32 +1,82 @@
 import React, { useState } from "react";
+import { POST } from "../services/api";
+import LS from "../services/LS";
 
 const Login = () => {
+    const [is_login, setIsLogin] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [name, setName] = useState("");
+    const [image_url, setImageUrl] = useState("");
 
     const handleLogin = () => {
-        fetch("http://localhost:3000/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email, password }),
-        })
-            .then(console.log)
-            .catch(console.error);
+        const destination = is_login ? "/auth/login" : "/auth/register";
+        const data = { email, password, name, image_url };
+
+        POST(destination, data).then((data) => {
+            LS.tokens.set(data.token);
+        });
+    };
+
+    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = e.target.files;
+        if (!files) return;
+
+        const file = files[0];
+        if (!file) return;
+
+        POST("/api/upload", file, false).then((data) => {
+            if (data.image_url) {
+                setImageUrl(data.image_url);
+            }
+        });
+    };
+
+    const REQUIRED = () => {
+        return (
+            <span style={{ fontWeight: "bold", fontSize: "1.5em" }} className="text-danger">
+                *
+            </span>
+        );
     };
 
     return (
-        <div className="row mt-5">
+        <div className="row justify-content-center mt-5">
             <div className="col-12 col-md-7">
                 <div className="card shadow-lg p-3">
-                    <label htmlFor="email">Email:</label>
-                    <input name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                    <label htmlFor="password">Password:</label>
-                    <input name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <h3 className="text-center">
+                        {is_login ? "Logging in" : "Registering"}.{" "}
+                        <span onClick={() => setIsLogin(!is_login)} className="btn btn-primary">
+                            Need to {is_login ? "register" : "log in"}?
+                        </span>
+                    </h3>
+                    {!is_login && (
+                        <>
+                            <label className="mt-3" htmlFor="name">
+                                <REQUIRED />
+                                Name:
+                            </label>
+                            <input className="form-control" name="name" type="name" value={name} onChange={(e) => setName(e.target.value)} />
+                            <label className="mt-3" htmlFor="image_url">
+                                Profile Image:
+                            </label>
+                            <input className="form-control" name="image_url" type="file" onChange={handleImageUpload} />
+                            {image_url && <img style={{ maxHeight: "33vh" }} src={image_url} />}
+                        </>
+                    )}
+                    <label className="mt-3" htmlFor="email">
+                        <REQUIRED />
+                        Email:
+                    </label>
+                    <input className="form-control" name="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                    <label className="mt-3" htmlFor="password">
+                        <REQUIRED />
+                        Password:
+                    </label>
+                    <input className="form-control" name="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 
-                    <button onClick={handleLogin} className="btn btn-submit">
-                        Login!
+                    <button onClick={handleLogin} className="mt-2 btn btn-primary">
+                        {is_login ? "Log in!" : "Finish registration"}
                     </button>
                 </div>
             </div>
