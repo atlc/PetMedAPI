@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import REQUIRED from "../components/REQUIRED";
 import { POST } from "../services/api";
 import LS from "../services/LS";
+import alerts from "../services/alerts";
 
 const Login = () => {
     const [is_login, setIsLogin] = useState(false);
@@ -11,9 +13,17 @@ const Login = () => {
 
     const handleLogin = () => {
         const destination = is_login ? "/auth/login" : "/auth/register";
-        const data = { email, password, name, image_url };
+        const data = { email, password } as { email: string; password: string; name?: string; image_url?: string };
+
+        if (!is_login) {
+            data.name = name;
+            if (image_url) {
+                data.image_url = image_url;
+            }
+        }
 
         POST(destination, data).then((data) => {
+            alerts.success(data.message);
             LS.tokens.set(data.token);
         });
     };
@@ -30,14 +40,6 @@ const Login = () => {
                 setImageUrl(data.image_url);
             }
         });
-    };
-
-    const REQUIRED = () => {
-        return (
-            <span style={{ fontWeight: "bold", fontSize: "1.5em" }} className="text-danger">
-                *
-            </span>
-        );
     };
 
     return (

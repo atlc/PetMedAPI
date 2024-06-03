@@ -14,6 +14,7 @@ const pet = z.object({
 
 const createable_pet = pet.partial({
     id: true,
+    household_id: true,
     image_url: true,
     created_at: true,
     updated_at: true,

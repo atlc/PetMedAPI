@@ -111,5 +111,5 @@ CREATE TRIGGER reassign_medications_updated_at BEFORE UPDATE
     reassign_updated_at_column();
 
 CREATE TRIGGER reassign_medication_schedule_updated_at BEFORE UPDATE
-    ON medication_schedule FOR EACH ROW EXECUTE PROCEDURE 
+    ON medication_schedules FOR EACH ROW EXECUTE PROCEDURE 
     reassign_updated_at_column();

@@ -5,11 +5,12 @@ import { is_valid_household } from "../../middleware/api/households";
 const router = express.Router();
 
 router.post("/", is_valid_household, async (req, res) => {
-    const { owner_id, name } = req.body;
+    const { name } = req.body;
     try {
-        const { id } = await db.households.create({ name, owner_id });
+        const owner_id = req.user.id;
+        const { id } = (await db.households.create({ name, owner_id })) as { id: string };
 
-        await db.user_households.create({ user_id: owner_id, household_id: id! });
+        await db.user_households.create({ user_id: owner_id, household_id: id });
 
         res.status(201).json({ message: "Successfully created household", id });
     } catch (error) {

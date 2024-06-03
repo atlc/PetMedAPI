@@ -10,6 +10,7 @@ const household = z.object({
 
 const createable_household = household.partial({
     id: true,
+    owner_id: true,
     created_at: true,
     updated_at: true,
 });

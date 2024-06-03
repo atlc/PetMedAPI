@@ -16,7 +16,10 @@ router.post("/", async (req, res) => {
 
         await sendVerificationMail({ email, id, name });
 
-        res.status(201).json({ message: "User registered successfully!", id });
+        res.status(201).json({
+            message: "User registered successfully! Please check your email within the next 15 minutes in order to verify your account",
+            id,
+        });
     } catch (error) {
         console.log(error);
         let message: string;

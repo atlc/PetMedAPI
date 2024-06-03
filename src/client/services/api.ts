@@ -30,6 +30,13 @@ export const fetcher = <T = any>(url: string, method: SUPPORTED_METHODS = "GET",
     const server_preface = process.env.NODE_ENV === "development" ? "http://localhost:3000" : "";
     const full_url = server_preface + url;
 
+    console.log({
+        fetchData: {
+            full_url,
+            options,
+        },
+    });
+
     return new Promise<T>(async (resolve) => {
         try {
             const res = await fetch(full_url, options);

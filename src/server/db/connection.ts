@@ -6,6 +6,7 @@ const pool = new pg.Pool(config.db);
 type QueryResultsReturningID = pg.QueryResult & { id?: string };
 
 export const Query = async <T = QueryResultsReturningID>(sql: string, vals?: unknown[]) => {
+    console.log({ sql, vals });
     const res = await pool.query(sql, vals);
 
     if (res.command === "SELECT") return res.rows as T;
