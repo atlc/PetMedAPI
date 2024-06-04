@@ -6,6 +6,8 @@ const medication = z.object({
     pet_id: z.string().uuid(),
     dosage_amount: z.string().min(1).max(64),
     dosage_unit: z.string().uuid(),
+    schedule_quantity: z.string().min(1).max(64),
+    schedule_unit: z.string().uuid(),
     start_date: z.string().datetime().optional(),
     end_date: z.string().datetime().optional(),
     notes: z.string().max(1024).optional(),

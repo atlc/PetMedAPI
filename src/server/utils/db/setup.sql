@@ -1,3 +1,4 @@
+-- DROP DATABASE PetMed;
 CREATE DATABASE PetMed;
 
 CREATE TABLE users (
@@ -47,6 +48,12 @@ CREATE TABLE dosage_units (
 );
 INSERT INTO dosage_units (name) VALUES ('mg (milligrams)'), ('units (insulin)'), ('mL (milliliters)'), ('tsp (teaspoons)'), ('tbsp (tablespoons)'), ('tablets'), ('caplets'), ('pills');
 
+CREATE TABLE schedule_units (
+	id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  name VARCHAR(16)
+);
+INSERT INTO schedule_units (name) VALUES ('minutes', 'hours', 'days', 'weeks', 'months');
+
 
 CREATE TABLE medications (
 	id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
@@ -54,35 +61,27 @@ CREATE TABLE medications (
   pet_id UUID,
   dosage_amount VARCHAR(64) NOT NULL,
   dosage_unit UUID,
+  schedule_quantity VARCHAR(64) NOT NULL,
+  schedule_unit UUID,
   start_date DATE DEFAULT CURRENT_TIMESTAMP,
   end_date DATE DEFAULT CURRENT_TIMESTAMP + INTERVAL '10 years',
   notes VARCHAR(1024),
   created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMPTZ,
   FOREIGN KEY (dosage_unit) REFERENCES dosage_units(id),
+  FOREIGN KEY (schedule_unit) REFERENCES schedule_units(id),
   FOREIGN KEY (pet_id) REFERENCES pets(id)
-);
-
-CREATE TABLE medication_schedules (
-	id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  scheduled_time TIME NOT NULL,
-  medication_id UUID,
-	created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMPTZ,
-  FOREIGN KEY (medication_id) REFERENCES medications(id)
 );
 
 CREATE TABLE medication_log (
 	id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   medication_id UUID,
   notes VARCHAR(1024),
-  scheduled_medication_id UUID,
   administering_user_id UUID,
   administration_time TIMESTAMPTZ NOT NULL,
   time_logged TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (administering_user_id) REFERENCES users(id),
   FOREIGN KEY (medication_id) REFERENCES medications(id),
-  FOREIGN KEY (scheduled_medication_id) REFERENCES medication_schedules(id)
 );
 
 CREATE OR REPLACE FUNCTION reassign_updated_at_column()
@@ -108,8 +107,4 @@ CREATE TRIGGER reassign_pets_updated_at BEFORE UPDATE
     
 CREATE TRIGGER reassign_medications_updated_at BEFORE UPDATE
     ON medications FOR EACH ROW EXECUTE PROCEDURE 
-    reassign_updated_at_column();
-
-CREATE TRIGGER reassign_medication_schedule_updated_at BEFORE UPDATE
-    ON medication_schedules FOR EACH ROW EXECUTE PROCEDURE 
     reassign_updated_at_column();
