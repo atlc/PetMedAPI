@@ -8,6 +8,7 @@ const medication = z.object({
     dosage_unit: z.string().uuid(),
     schedule_quantity: z.string().min(1).max(64),
     schedule_unit: z.string().uuid(),
+    initial_administration_time: z.string().min(1).max(10),
     start_date: z.string().datetime().optional(),
     end_date: z.string().datetime().optional(),
     notes: z.string().max(1024).optional(),
@@ -17,8 +18,6 @@ const medication = z.object({
 
 const createable_medication = medication.partial({
     id: true,
-    start_date: true,
-    end_date: true,
     notes: true,
     created_at: true,
     updated_at: true,

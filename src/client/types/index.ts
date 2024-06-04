@@ -20,12 +20,20 @@ export interface CreatableMedication {
     pet_id: string;
     dosage_amount: string;
     dosage_unit: string;
+    schedule_quantity: string;
+    schedule_unit: string;
+    initial_administration_time: string;
     start_date: string | CalendarValue;
     end_date: string | CalendarValue;
     notes: string;
 }
 
 export interface DosageUnit {
+    id: string;
+    name: string;
+}
+
+export interface ScheduleUnit {
     id: string;
     name: string;
 }

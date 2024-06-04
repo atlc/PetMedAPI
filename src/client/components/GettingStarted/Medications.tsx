@@ -8,17 +8,27 @@ const Medications = () => {
     const household = LS.getting_started.household.get() || { id: "" };
 
     const [dosageUnits, setDosageUnits] = useState<[]>([]);
+    const [scheduleUnits, setScheduleUnits] = useState<[]>([]);
 
     useEffect(() => {
         GET("/api/dosage_units").then(setDosageUnits);
+        GET("/api/schedule_units").then(setScheduleUnits);
     }, []);
 
     return (
         <div className="row mt-5 justify-content-center">
             <div className="col-12">
-                {pets.map((pet) => (
-                    <PetMedicationCard pet={pet} dosage_units={dosageUnits} household_id={household.id} key={`pet-${pet.id}-medications`} />
+                {pets.map((pet, i) => (
+                    <PetMedicationCard
+                        is_first={i === 0}
+                        pet={pet}
+                        dosage_units={dosageUnits}
+                        schedule_units={scheduleUnits}
+                        household_id={household.id}
+                        key={`pet-${pet.id}-medications`}
+                    />
                 ))}
+                <button className="btn btn-primary">Next</button>
             </div>
         </div>
     );

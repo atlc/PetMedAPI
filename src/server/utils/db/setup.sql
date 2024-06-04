@@ -2,7 +2,7 @@
 CREATE DATABASE PetMed;
 
 CREATE TABLE users (
-	id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name VARCHAR(64) NOT NULL,
   email VARCHAR(128) UNIQUE,
   password CHAR(60) NOT NULL,
@@ -52,7 +52,7 @@ CREATE TABLE schedule_units (
 	id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   name VARCHAR(16)
 );
-INSERT INTO schedule_units (name) VALUES ('minutes', 'hours', 'days', 'weeks', 'months');
+INSERT INTO schedule_units (name) VALUES ('minutes'), ('hours'), ('days'), ('weeks'), ('months');
 
 
 CREATE TABLE medications (
@@ -63,6 +63,7 @@ CREATE TABLE medications (
   dosage_unit UUID,
   schedule_quantity VARCHAR(64) NOT NULL,
   schedule_unit UUID,
+  initial_administration_time VARCHAR(10) NOT NULL,
   start_date DATE DEFAULT CURRENT_TIMESTAMP,
   end_date DATE DEFAULT CURRENT_TIMESTAMP + INTERVAL '10 years',
   notes VARCHAR(1024),
@@ -81,7 +82,7 @@ CREATE TABLE medication_log (
   administration_time TIMESTAMPTZ NOT NULL,
   time_logged TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
   FOREIGN KEY (administering_user_id) REFERENCES users(id),
-  FOREIGN KEY (medication_id) REFERENCES medications(id),
+  FOREIGN KEY (medication_id) REFERENCES medications(id)
 );
 
 CREATE OR REPLACE FUNCTION reassign_updated_at_column()

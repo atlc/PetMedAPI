@@ -58,8 +58,9 @@ export interface NewMedication {
     pet_id: Pet["id"];
     dosage_amount: string;
     dosage_unit: DosageUnit["id"];
-    schedule_amount: string;
+    schedule_quantity: string;
     schedule_unit: ScheduleUnit["id"];
+    initial_administration_time: string;
     start_date: string;
     end_date: string;
     notes?: string;
